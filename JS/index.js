@@ -49,19 +49,41 @@ const addApplication = (e) => {
 
 const fetchApplications = () => {
   let applications = JSON.parse(localStorage.getItem("applications")) || [];
-  console.log(applications)
+  console.log(applications);
   const table = document.getElementById('applicationTable');
 
   let total = 0, applied = 0, interviewing = 0, hired = 0, rejected = 0;
   applications.forEach(application => {
     const row = document.createElement('tr');
+    let statusColor;
+    if (application.jobStatus == "hired") {
+      statusColor = "green"
+    }
+    else if (application.jobStatus == "rejected") {
+      statusColor = "red"
+    }
+    else if (application.jobStatus == "interviewing") {
+      statusColor = "blue"
+    }
+    else {
+      statusColor = "black"
+    }
+
+    console.log(statusColor)
+
     row.innerHTML = `
       <td>${application.companyName}</td>
       <td>${application.jobRole}</td>
       <td>${application.jobType}</td>
-      <td>${application.jobStatus}</td>
-      <td><button class="btn-table" onclick="editApplication('${application.id}')"> <span class="btn-label">Edit</span> 🖊️ </button>
-      <button class="btn-table" onclick="deleteApplication('${application.id}')"> <span class="btn-label" >Delete</span> ❌ </button></td>
+      <td style="color: ${statusColor};">${application.jobStatus}</td>
+      <td>
+        <button class="btn-table" onclick="editApplication('${application.id}')"> 
+          <span class="btn-label">Edit</span> 🖊️ 
+        </button>
+        <button class="btn-table" onclick="deleteApplication('${application.id}')"> 
+          <span class="btn-label" >Delete</span> ❌ 
+        </button>
+      </td>
     `;
 
     table.appendChild(row);
@@ -86,6 +108,7 @@ const fetchApplications = () => {
   document.getElementById('hiredCount').textContent = hired;
   document.getElementById('rejectedCount').textContent = rejected;
 };
+
 
 
 const editApplication = (id) => {
