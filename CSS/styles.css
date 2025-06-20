@@ -152,4 +152,12 @@ table button {
   table {
     font-size: 15px;
   }
+
+  td {
+    text-align: center;
+  }
+}
+
+.text-danger {
+  color: red;
 }

@@ -25,15 +25,15 @@
           <form action="" onsubmit="addApplication(event)">
             <input type="hidden" name="applicationId" id="applicationId">
             <div class="input">
-              <label for="companyName">Company Name</label>
+              <label for="companyName">Company Name<span class="text-danger">*</span></label>
               <input type="text" name="companyName" id="companyName">
             </div>
             <div class="input">
-              <label for="jobRole">Job Role</label>
+              <label for="jobRole">Job Role<span class="text-danger">*</span></label>
               <input type="text" name="jobRole" id="jobRole">
             </div>
             <div class="input">
-              <label for="labelJobType">Job Type</label>
+              <label for="labelJobType">Job Type<span class="text-danger">*</span></label>
               <select name="jobType" id="jobType" onchange="isRemoteSelected()">
                 <option value="onsite">On-Site</option>
                 <option value="remote">Remote</option>
@@ -41,15 +41,15 @@
               </select>
             </div>
             <div class="input" id="location">
-              <label for="locationInput">Location</label>
+              <label for="locationInput">Location<span class="text-danger">*</span></label>
               <input type="text" name="location" id="locationInput">
             </div>
             <div class="input">
-              <label for="applicationDate">Application Date</label>
+              <label for="applicationDate">Application Date<span class="text-danger">*</span></label>
               <input type="date" name="applicationDate" id="applicationDate">
             </div>
             <div class="input">
-              <label for="jobStatus">Application Status</label>
+              <label for="jobStatus">Application Status<span class="text-danger">*</span></label>
               <select name="jobStatus" id="jobStatus">
                 <option value="applied"> Applied</option>
                 <option value="interviewing"> Interviewing </option>
