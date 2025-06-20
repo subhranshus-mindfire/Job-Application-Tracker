@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./CSS/styles.css">
+</head>
+
+<body onload="fetchApplications()">
+
+  <div class="container">
+    <h1 class="text-center fs-larger">Job Application Tracker</h1>
+    <div class="top total-status text-center">
+      <h1>Job Applications: <span id="totalApplications"></span> | Applied: <span id="appliedCount"></span> |
+        Interviewing:
+        <span id="interviewingCount"></span> | Hired: <span id="hiredCount"></span> | ❌ <span id="rejectedCount"></span>
+      </h1>
+    </div>
+    <div class="grid halfs gap-2">
+      <div class="left">
+        <div class="form bg-light">
+          <h2 class="text-center"><u>Job Application Form</u></h2>
+          <form action="" onsubmit="addApplication(event)">
+            <input type="hidden" name="applicationId" id="applicationId">
+            <div class="input">
+              <label for="companyName">Company Name</label>
+              <input type="text" name="companyName" id="companyName">
+            </div>
+            <div class="input">
+              <label for="jobRole">Job Role</label>
+              <input type="text" name="jobRole" id="jobRole">
+            </div>
+            <div class="input">
+              <label for="labelJobType">Job Type</label>
+              <select name="jobType" id="jobType" onchange="isRemoteSelected()">
+                <option value="onsite">On-Site</option>
+                <option value="remote">Remote</option>
+                <option value="hybrid">Hybrid</option>
+              </select>
+            </div>
+            <div class="input" id="location">
+              <label for="locationInput">Location</label>
+              <input type="text" name="location" id="locationInput">
+            </div>
+            <div class="input">
+              <label for="applicationDate">Application Date</label>
+              <input type="date" name="applicationDate" id="applicationDate">
+            </div>
+            <div class="input">
+              <label for="jobStatus">Application Status</label>
+              <select name="jobStatus" id="jobStatus">
+                <option value="applied"> Applied</option>
+                <option value="interviewing"> Interviewing </option>
+                <option value="rejected"> Rejected </option>
+                <option value="hired"> Hired </option>
+              </select>
+            </div>
+            <div class="input">
+              <label for="notes">Notes:</label>
+              <input type="text" name="notes" id="notes">
+            </div>
+            <div class="buttons flex justify-center">
+              <div class="submit" id="submit">
+                <input type="submit" value="Submit" id="submit-btn">
+              </div>
+              <div class="update hidden" id="update">
+                <input type="button" value="Update" id="update-btn" onclick="updateApplication()">
+                <input type="button" value="Cancel" onclick="refresh()">
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="right">
+        <h2 class="text-center"><u>Job Application Table</u></h2>
+        <table id="applicationTable" align="center">
+          <tr>
+            <th>Company Name</th>
+            <th>Job Role</th>
+            <th>Job Type</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script src="./JS/index.js"></script>
+</body>
+
+</html>
