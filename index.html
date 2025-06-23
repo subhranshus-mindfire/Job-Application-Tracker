@@ -22,18 +22,21 @@
       <div class="left">
         <div class="form bg-light">
           <h2 class="text-center"><u>Job Application Form</u></h2>
-          <form action="" onsubmit="addApplication(event)">
+          <form onsubmit="addApplication(event)">
             <input type="hidden" name="applicationId" id="applicationId">
             <div class="input">
               <label for="companyName">Company Name<span class="text-danger">*</span></label>
+              <span class="nameError text-danger hidden">- Please specify name of the company</span>
               <input type="text" name="companyName" id="companyName">
             </div>
             <div class="input">
               <label for="jobRole">Job Role<span class="text-danger">*</span></label>
+              <span class="roleError text-danger hidden">- Please specify role of the job</span>
               <input type="text" name="jobRole" id="jobRole">
             </div>
             <div class="input">
               <label for="labelJobType">Job Type<span class="text-danger">*</span></label>
+              <span class="jobtypeError text-danger hidden">- Please specify job type</span>
               <select name="jobType" id="jobType" onchange="isRemoteSelected()">
                 <option value="onsite">On-Site</option>
                 <option value="remote">Remote</option>
@@ -41,15 +44,18 @@
               </select>
             </div>
             <div class="input" id="location">
-              <label for="locationInput">Location<span class="text-danger">*</span></label>
-              <input type="text" name="location" id="locationInput">
+              <label for="location">Location<span class="text-danger">*</span></label>
+              <span class="locationError text-danger hidden">- Please specify location</span>
+              <input type="text" name="location" id="location">
             </div>
             <div class="input">
               <label for="applicationDate">Application Date<span class="text-danger">*</span></label>
+              <span class="applicationdateError text-danger hidden">- Please specify application date</span>
               <input type="date" name="applicationDate" id="applicationDate">
             </div>
             <div class="input">
               <label for="jobStatus">Application Status<span class="text-danger">*</span></label>
+              <span class="statusError text-danger hidden">- Please specify application status</span>
               <select name="jobStatus" id="jobStatus">
                 <option value="applied"> Applied</option>
                 <option value="interviewing"> Interviewing </option>

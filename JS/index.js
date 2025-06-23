@@ -14,16 +14,40 @@ const isRemoteSelected = () => {
 const applicationVerified = () => {
   const companyName = document.getElementById('companyName').value;
   const jobRole = document.getElementById('jobRole').value;
+  const jobType = document.getElementById("jobType").value
   const applicationDate = document.getElementById('applicationDate').value;
   const jobStatus = document.getElementById('jobStatus').value;
-
-  if (!companyName || !jobRole || !applicationDate || !jobStatus) {
-    return false;
+  const location = document.getElementById('location').value
+  let res = true
+  if (!companyName) {
+    document.getElementsByClassName("nameError")[0].classList.remove("hidden")
+    res = false
   }
-  return true;
+  if (!jobRole) {
+    document.getElementsByClassName("roleError")[0].classList.remove("hidden")
+    res = false
+  }
+  if (!jobType) {
+    document.getElementsByClassName("jobtypeError")[0].classList.remove("hidden")
+    res = false
+  }
+  if (!applicationDate) {
+    document.getElementsByClassName("applicationdateError")[0].classList.remove("hidden")
+    res = false
+  }
+  if (!jobStatus) {
+    document.getElementsByClassName("statusError")[0].classList.remove("hidden")
+    res = false
+  }
+  if (jobStatus && jobStatus != "remote" && !location) {
+    document.getElementsByClassName("locationError")[0].classList.remove("hidden")
+    res = false
+  }
+  return res;
 };
 
 const addApplication = (e) => {
+  e.preventDefault()
   const formData = {
     id: Date.now(),
     companyName: document.getElementById('companyName').value,
@@ -35,7 +59,7 @@ const addApplication = (e) => {
   };
 
   if (formData.jobType != "remote") {
-    formData.location = document.getElementById('locationInput').value;
+    formData.location = document.getElementById('location').value;
   }
 
   let prevApplications = JSON.parse(localStorage.getItem("applications")) || [];
@@ -44,8 +68,6 @@ const addApplication = (e) => {
     prevApplications.push(formData);
     localStorage.setItem("applications", JSON.stringify(prevApplications));
     alert("Application successfully added!");
-  } else {
-    alert("Please fill out all required fields.");
   }
 };
 
@@ -132,7 +154,7 @@ const editApplication = (id) => {
       document.getElementById('location').style.display = "none";
     } else {
       document.getElementById('location').style.display = "block";
-      document.getElementById('locationInput').value = application.location;
+      document.getElementById('location').value = application.location;
     }
     document.getElementById('applicationId').value = application.id;
   }
@@ -159,7 +181,7 @@ const updateApplication = () => {
   };
 
   if (formData.jobType != "remote") {
-    formData.location = document.getElementById('locationInput').value;
+    formData.location = document.getElementById('location').value;
     console.log("hii")
   }
 
