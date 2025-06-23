@@ -12,11 +12,53 @@
 
   <div class="container">
     <h1 class="text-center fs-larger">Job Application Tracker</h1>
-    <div class="top total-status text-center">
-      <h1>Job Applications: <span id="totalApplications"></span> | Applied: <span id="appliedCount"></span> |
+    <!-- <div class="top total-status text-center">
+      <h1>Job Applications: | Applied: <span id="appliedCount"></span> |
         Interviewing:
         <span id="interviewingCount"></span> | Hired: <span id="hiredCount"></span> | ❌ <span id="rejectedCount"></span>
       </h1>
+    </div> -->
+    <div class="flex statuses justify-content-evenly">
+      <div class="card">
+        <div class="text-center">
+          <span id="totalApplications"></span>
+        </div>
+        <div class="text-center">
+          Job Applications
+        </div>
+      </div>
+      <div class="card">
+        <div class="text-center">
+          <span id="hiredCount"></span>
+        </div>
+        <div class="text-center">
+          Hired
+        </div>
+      </div>
+      <div class="card">
+        <div class="text-center">
+          <span id="appliedCount"></span>
+        </div>
+        <div class="text-center">
+          Applied
+        </div>
+      </div>
+      <div class="card">
+        <div class="text-center">
+          <span id="interviewingCount"></span>
+        </div>
+        <div class="text-center">
+          Interviewing
+        </div>
+      </div>
+      <div class="card">
+        <div class="text-center">
+          <span id="rejectedCount"></span>
+        </div>
+        <div class="text-center">
+          Rejected
+        </div>
+      </div>
     </div>
     <div class="grid halfs gap-2">
       <div class="left">
@@ -32,7 +74,8 @@
             <div class="input">
               <label for="jobRole">Job Role<span class="text-danger">*</span></label>
               <span class="roleError text-danger hidden">- Please specify role of the job</span>
-              <input type="text" name="jobRole" id="jobRole">
+              <input type="text" name="jobRole" id="jobRole" autocomplete="off">
+              <ul id="autocompleteRoles" class="autocomplete-roles hidden"></ul>
             </div>
             <div class="input">
               <label for="labelJobType">Job Type<span class="text-danger">*</span></label>

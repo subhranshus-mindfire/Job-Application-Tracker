@@ -3,7 +3,7 @@
 }
 
 body {
-  background-image: url("../images/img2.jpg");
+  background-color: #F2F2F2;
   background-size: cover;
 }
 
@@ -52,6 +52,9 @@ input,
 select {
   height: 35px;
   font-size: large;
+  padding-left: 10px;
+  border-radius: 5px;
+  border: 2px solid #dddddd;
 }
 
 label {
@@ -79,10 +82,10 @@ form {
   padding: .375rem 1.95rem;
   line-height: 1.5;
   color: #00060c;
-  background-color: #fff;
+  background-color: #ffffff;
   background-clip: padding-box;
   border: 1px solid #ced4da;
-  border-radius: .25rem;
+  border-radius: 3%;
   transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
@@ -97,12 +100,50 @@ td {
 
 .fs-larger {
   font-size: 36px;
-  color: blue;
+  color: #000000;
   font-weight: bolder;
 }
 
 table button {
   font-size: medium;
+}
+
+.autocomplete-roles {
+  position: relative;
+  border: 1px solid #ccc;
+  border-top: none;
+  max-height: 150px;
+  overflow-y: auto;
+  background-color: white;
+  width: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0%;
+}
+
+.autocomplete-roles li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.autocomplete-roles li:hover {
+  background-color: #f0f0f0;
+}
+
+.card {
+  height: 90px;
+  font-size: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #ffffff;
+  width: 300px;
+  padding: 20px;
+  border-radius: 5%;
+}
+
+.justify-content-evenly {
+  justify-content: space-evenly;
 }
 
 @media screen and (max-width: 480px) {

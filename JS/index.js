@@ -235,3 +235,58 @@ const deleteApplication = (applicationId) => {
     alert("Application deletion cancelled.");
   }
 };
+
+
+const jobRoles = [
+  "Software Engineer",
+  "SDE",
+  "Associate Software Engineer",
+  "System Engineer",
+  "Frontend Developer",
+  "Backend Developer",
+  "Full Stack Developer",
+  "Data Scientist",
+  "Project Manager",
+  "DevOps Engineer",
+  "Product Manager",
+  "QA Engineer",
+  "UI/UX Designer",
+  "Business Analyst"
+];
+
+const jobRoleInput = document.getElementById('jobRole');
+const autocompleteList = document.getElementById('autocompleteRoles');
+
+jobRoleInput.addEventListener('input', () => {
+  const input = jobRoleInput.value.toLowerCase();
+  autocompleteList.innerHTML = '';
+  if (!input) {
+    autocompleteList.classList.add('hidden');
+    return;
+  }
+
+  const matches = jobRoles.filter(role => role.toLowerCase().includes(input));
+  if (matches.length === 0) {
+    autocompleteList.classList.add('hidden');
+    return;
+  }
+
+  matches.forEach(role => {
+    const li = document.createElement('li');
+    li.textContent = role;
+    li.addEventListener('click', () => {
+      jobRoleInput.value = role;
+      autocompleteList.innerHTML = '';
+      autocompleteList.classList.add('hidden');
+    });
+    autocompleteList.appendChild(li);
+  });
+  autocompleteList.classList.remove('hidden');
+});
+
+document.addEventListener('click', (e) => {
+  if (!autocompleteList.contains(e.target) && e.target !== jobRoleInput) {
+    autocompleteList.classList.add('hidden');
+  }
+});
+
