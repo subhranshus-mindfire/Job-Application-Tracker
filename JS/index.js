@@ -1,3 +1,6 @@
+
+document.getElementById('applicationDate').max = new Date().toISOString().split('T')[0];
+
 const isRemoteSelected = () => {
   if (document.getElementById("jobType").value == "remote") {
     document.getElementById("location").style.display = "none";
