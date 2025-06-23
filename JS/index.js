@@ -11,43 +11,66 @@ const isRemoteSelected = () => {
   }
 };
 
-const applicationVerified = () => {
+const isApplicationVerified = () => {
   const companyName = document.getElementById('companyName').value;
   const jobRole = document.getElementById('jobRole').value;
-  const jobType = document.getElementById("jobType").value
+  const jobType = document.getElementById("jobType").value;
   const applicationDate = document.getElementById('applicationDate').value;
   const jobStatus = document.getElementById('jobStatus').value;
-  const location = document.getElementById('location').value
-  let res = true
+  const location = document.getElementById('locationInput').value;
+  let res = true;
+
   if (!companyName) {
-    document.getElementsByClassName("nameError")[0].classList.remove("hidden")
-    res = false
+    document.getElementsByClassName("nameError")[0].classList.remove("hidden");
+    res = false;
+  } else {
+    document.getElementsByClassName("nameError")[0].classList.add("hidden");
   }
+
   if (!jobRole) {
-    document.getElementsByClassName("roleError")[0].classList.remove("hidden")
-    res = false
+    document.getElementsByClassName("roleError")[0].classList.remove("hidden");
+    res = false;
+  } else {
+    document.getElementsByClassName("roleError")[0].classList.add("hidden");
   }
+
   if (!jobType) {
-    document.getElementsByClassName("jobtypeError")[0].classList.remove("hidden")
-    res = false
+    document.getElementsByClassName("jobtypeError")[0].classList.remove("hidden");
+    res = false;
+  } else {
+    document.getElementsByClassName("jobtypeError")[0].classList.add("hidden");
   }
-  if (!applicationDate) {
-    document.getElementsByClassName("applicationdateError")[0].classList.remove("hidden")
-    res = false
+
+  if (jobStatus && jobStatus !== "remote" && !location) {
+    document.getElementsByClassName("locationError")[0].classList.remove("hidden");
+    res = false;
+  } else {
+    document.getElementsByClassName("locationError")[0].classList.add("hidden");
+    res = true;
   }
+  console.log(applicationDate, applicationDate.length == 0)
+  if (applicationDate.length == 0) {
+    document.getElementsByClassName("applicationdateError")[0].classList.remove("hidden");
+    res = false;
+  } else {
+    document.getElementsByClassName("applicationdateError")[0].classList.add("hidden");
+  }
+
   if (!jobStatus) {
-    document.getElementsByClassName("statusError")[0].classList.remove("hidden")
-    res = false
+    document.getElementsByClassName("statusError")[0].classList.remove("hidden");
+    res = false;
+  } else {
+    document.getElementsByClassName("statusError")[0].classList.add("hidden");
   }
-  if (jobStatus && jobStatus != "remote" && !location) {
-    document.getElementsByClassName("locationError")[0].classList.remove("hidden")
-    res = false
-  }
+
+  console.log(jobStatus && jobStatus !== "remote" && !location, location)
+
+
+  console.log(res);
   return res;
 };
 
 const addApplication = (e) => {
-  e.preventDefault()
   const formData = {
     id: Date.now(),
     companyName: document.getElementById('companyName').value,
@@ -59,12 +82,12 @@ const addApplication = (e) => {
   };
 
   if (formData.jobType != "remote") {
-    formData.location = document.getElementById('location').value;
+    formData.location = document.getElementById('locationInput').value;
   }
 
   let prevApplications = JSON.parse(localStorage.getItem("applications")) || [];
 
-  if (applicationVerified()) {
+  if (isApplicationVerified()) {
     prevApplications.push(formData);
     localStorage.setItem("applications", JSON.stringify(prevApplications));
     alert("Application successfully added!");
