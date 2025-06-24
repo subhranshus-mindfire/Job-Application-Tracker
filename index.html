@@ -6,25 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="./CSS/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body onload="fetchApplications()">
 
   <div class="container">
     <h1 class="text-center fs-larger">Job Application Tracker</h1>
-    <!-- <div class="top total-status text-center">
-      <h1>Job Applications: | Applied: <span id="appliedCount"></span> |
-        Interviewing:
-        <span id="interviewingCount"></span> | Hired: <span id="hiredCount"></span> | ❌ <span id="rejectedCount"></span>
-      </h1>
-    </div> -->
     <div class="flex statuses justify-content-evenly">
       <div class="card">
         <div class="text-center">
           <span id="totalApplications"></span>
         </div>
         <div class="text-center">
-          Job Applications
+          Applications <i class="fa-solid fa-envelope"></i>
         </div>
       </div>
       <div class="card">
@@ -32,7 +34,7 @@
           <span id="hiredCount"></span>
         </div>
         <div class="text-center">
-          Hired
+          Hired <i class="fa-solid fa-circle-check" style="color: #37ff00;"></i>
         </div>
       </div>
       <div class="card">
@@ -40,7 +42,7 @@
           <span id="appliedCount"></span>
         </div>
         <div class="text-center">
-          Applied
+          Applied <i class="fa-solid fa-arrow-right-to-bracket"></i>
         </div>
       </div>
       <div class="card">
@@ -48,7 +50,7 @@
           <span id="interviewingCount"></span>
         </div>
         <div class="text-center">
-          Interviewing
+          Interviewing <i class="fa-solid fa-chalkboard-user"></i>
         </div>
       </div>
       <div class="card">
@@ -56,83 +58,121 @@
           <span id="rejectedCount"></span>
         </div>
         <div class="text-center">
-          Rejected
+          Rejected <i class="fa-solid fa-circle-xmark" style="color: #ff0000;"></i>
         </div>
       </div>
     </div>
     <div class="grid halfs gap-2">
       <div class="left">
         <div class="form bg-light">
-          <h2 class="text-center"><u>Job Application Form</u></h2>
-          <form onsubmit="addApplication(event)">
-            <input type="hidden" name="applicationId" id="applicationId">
-            <div class="input">
-              <label for="companyName">Company Name<span class="text-danger">*</span></label>
-              <span class="nameError text-danger hidden">- Please specify name of the company</span>
-              <input type="text" name="companyName" id="companyName">
-            </div>
-            <div class="input">
-              <label for="jobRole">Job Role<span class="text-danger">*</span></label>
-              <span class="roleError text-danger hidden">- Please specify role of the job</span>
-              <input type="text" name="jobRole" id="jobRole" autocomplete="off">
-              <ul id="autocompleteRoles" class="autocomplete-roles hidden"></ul>
-            </div>
-            <div class="input">
-              <label for="labelJobType">Job Type<span class="text-danger">*</span></label>
-              <span class="jobtypeError text-danger hidden">- Please specify job type</span>
-              <select name="jobType" id="jobType" onchange="isRemoteSelected()">
-                <option value="onsite">On-Site</option>
-                <option value="remote">Remote</option>
-                <option value="hybrid">Hybrid</option>
-              </select>
-            </div>
-            <div class="input" id="location">
-              <label for="location">Location<span class="text-danger">*</span></label>
-              <span class="locationError text-danger hidden">- Please specify location</span>
-              <input type="text" name="location" id="locationInput">
-            </div>
-            <div class="input">
-              <label for="applicationDate">Application Date<span class="text-danger">*</span></label>
-              <span class="applicationdateError text-danger hidden">- Please specify application date</span>
-              <input type="date" name="applicationDate" id="applicationDate">
-            </div>
-            <div class="input">
-              <label for="jobStatus">Application Status<span class="text-danger">*</span></label>
-              <span class="statusError text-danger hidden">- Please specify application status</span>
-              <select name="jobStatus" id="jobStatus">
-                <option value="applied"> Applied</option>
-                <option value="interviewing"> Interviewing </option>
-                <option value="rejected"> Rejected </option>
-                <option value="hired"> Hired </option>
-              </select>
-            </div>
-            <div class="input">
-              <label for="notes">Notes:</label>
-              <input type="text" name="notes" id="notes">
-            </div>
-            <div class="buttons flex justify-center">
-              <div class="submit" id="submit">
-                <input type="submit" value="Submit" id="submit-btn">
+          <h2 class="text-center" id="form-heading"><u>Job Application Form</u></h2>
+          <div class="flex justify-center">
+            <form onsubmit="addApplication(event)">
+              <input type="hidden" name="applicationId" id="applicationId">
+              <div class="input">
+                <label for="applicantName">Applicant Name<span class="text-danger">*</span></label>
+                <input type="text" name="applicantName" id="applicantName">
+                <span class="applicantNameError text-danger hidden">-Applicant name required</span>
               </div>
-              <div class="update hidden" id="update">
-                <input type="button" value="Update" id="update-btn" onclick="updateApplication()">
-                <input type="button" value="Cancel" onclick="refresh()">
+              <div class="input">
+                <label for="companyName">Company Name<span class="text-danger">*</span></label>
+                <input type="text" name="companyName" id="companyName">
+                <span class="nameError text-danger hidden">-Company name required</span>
               </div>
-            </div>
-          </form>
+              <div class="input">
+                <label for="jobRole">Job Role<span class="text-danger">*</span></label>
+                <input type="text" name="jobRole" id="jobRole" autocomplete="off">
+                <ul id="autocompleteRoles" class="autocomplete-roles hidden"></ul>
+                <span class="roleError text-danger hidden">-Job role required</span>
+              </div>
+              <div class="input">
+                <label for="labelJobType">Job Type<span class="text-danger">*</span></label>
+                <select name="jobType" id="jobType" onchange="isRemoteSelected()">
+                  <option value="onsite">On-Site</option>
+                  <option value="remote">Remote</option>
+                  <option value="hybrid">Hybrid</option>
+                </select>
+                <span class="jobtypeError text-danger hidden">-Job type required</span>
+              </div>
+              <div class="input" id="location">
+                <label for="location">Location<span class="text-danger">*</span></label>
+                <input type="text" name="location" id="locationInput">
+                <span class="locationError text-danger hidden">-Location required</span>
+              </div>
+              <div class="input">
+                <label for="applicationDate">Application Date<span class="text-danger">*</span></label>
+                <input type="date" name="applicationDate" id="applicationDate">
+                <span class="applicationdateError text-danger hidden">-Application date required</span>
+              </div>
+              <div class="input">
+                <label for="jobStatus">Application Status<span class="text-danger">*</span></label>
+                <select name="jobStatus" id="jobStatus">
+                  <option value="applied"> Applied</option>
+                  <option value="interviewing"> Interviewing </option>
+                  <option value="rejected"> Rejected </option>
+                  <option value="hired"> Hired </option>
+                </select>
+                <span class="statusError text-danger hidden">-Application status required</span>
+              </div>
+              <div class="input">
+                <label for="notes">Notes:</label>
+                <input type="text" name="notes" id="notes">
+              </div>
+              <div class="buttons flex justify-center">
+                <div class="submit" id="submit">
+                  <input type="submit" value="Submit" id="submit-btn">
+                </div>
+                <div class="update hidden" id="update">
+                  <input type="button" value="Update" id="update-btn" onclick="updateApplication()">
+                  <input type="button" value="Cancel" onclick="refresh()">
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
       <div class="right">
-        <h2 class="text-center"><u>Job Application Table</u></h2>
-        <table id="applicationTable" align="center">
-          <tr>
-            <th>Company Name</th>
-            <th>Job Role</th>
-            <th>Job Type</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </table>
+        <h2 class="text-center right-heading">Job Applications</h2>
+        <div class="toogle-btn">
+          <input type="button" value="Row" onclick="toggleView('row')" id="row-btn">
+          <input type="button" value="Grid" onclick="toggleView('grid')" id="grid-btn" class="active-btn">
+        </div>
+
+
+        <ul id="applicationTable">
+          <!-- <li class="application-card">
+            <div class="application-card-header flex">
+              <div class="application-card-header-left">
+                <div class="application-card-status">
+                  <span>${application.jobStatus}</span>
+                </div>
+                <div class="application-card-role">
+                  <b>${application.jobRole}</b>
+                </div>
+              </div>
+              <div class="application-card-header-right">
+                <div class="actions flex">
+                  <div class="application-card-date">
+                    Applied On ${application.applicationDate}
+                  </div>
+                  <a class="edit" href="#form-heading" onclick="editApplication('${application.id}')"><i
+                      class="fa-solid fa-pen"></i> Edit</a>
+
+                  <a class="delete" onclick="deleteApplication('${application.id}')"><i class="fa-solid fa-trash"></i>
+                    Delete</a>
+                </div>
+              </div>
+            </div>
+            <div class="application-card-body">
+              <div class="application-card-name">
+                ${application.companyName}
+              </div>
+              <div class="application-card-location">
+                <i class="fa-solid fa-house"></i> Bhubaneswar
+              </div>
+            </div>
+          </li> -->
+        </ul>
       </div>
     </div>
   </div>

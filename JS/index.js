@@ -6,12 +6,13 @@ const isRemoteSelected = () => {
     document.getElementById("location").style.display = "none";
     return true;
   } else {
-    document.getElementById("location").style.display = "block";
+    document.getElementById("location").style.display = "flex";
     return false;
   }
 };
 
 const isApplicationVerified = () => {
+  const applicantName = document.getElementById("applicantName");
   const companyName = document.getElementById('companyName').value;
   const jobRole = document.getElementById('jobRole').value;
   const jobType = document.getElementById("jobType").value;
@@ -19,6 +20,14 @@ const isApplicationVerified = () => {
   const jobStatus = document.getElementById('jobStatus').value;
   const location = document.getElementById('locationInput').value;
   let res = true;
+
+
+  if (!applicantName) {
+    document.getElementsByClassName("applicantNameError")[0].classList.remove("hidden");
+    res = false;
+  } else {
+    document.getElementsByClassName("applicantNameError")[0].classList.add("hidden");
+  }
 
   if (!companyName) {
     document.getElementsByClassName("nameError")[0].classList.remove("hidden");
@@ -71,8 +80,11 @@ const isApplicationVerified = () => {
 };
 
 const addApplication = (e) => {
+  e.preventDefault();
+
   const formData = {
     id: Date.now(),
+    applicantName: document.getElementById("applicantName").value,
     companyName: document.getElementById('companyName').value,
     jobRole: document.getElementById('jobRole').value,
     jobType: document.getElementById('jobType').value,
@@ -90,6 +102,7 @@ const addApplication = (e) => {
   if (isApplicationVerified()) {
     prevApplications.push(formData);
     localStorage.setItem("applications", JSON.stringify(prevApplications));
+    refresh();
     alert("Application successfully added!");
   }
 };
@@ -98,11 +111,12 @@ const addApplication = (e) => {
 const fetchApplications = () => {
   let applications = JSON.parse(localStorage.getItem("applications")) || [];
   console.log(applications);
-  const table = document.getElementById('applicationTable');
+  const ul = document.getElementById('applicationTable');
 
   let total = 0, applied = 0, interviewing = 0, hired = 0, rejected = 0;
   applications.forEach(application => {
-    const row = document.createElement('tr');
+    const li = document.createElement('li');
+    li.classList.add("application-card")
     let statusColor;
     if (application.jobStatus == "hired") {
       statusColor = "green"
@@ -119,33 +133,54 @@ const fetchApplications = () => {
 
     console.log(statusColor)
 
-    row.innerHTML = `
-      <td>${application.companyName}</td>
-      <td>${application.jobRole}</td>
-      <td>${application.jobType}</td>
-      <td style="color: ${statusColor};">${application.jobStatus}</td>
-      <td>
-        <button class="btn-table" onclick="editApplication('${application.id}')"> 
-          <span class="btn-label">Edit</span> 🖊️ 
-        </button>
-        <button class="btn-table" onclick="deleteApplication('${application.id}')"> 
-          <span class="btn-label" >Delete</span> ❌ 
-        </button>
-      </td>
+    li.innerHTML = `
+      <div class="application-card-header flex">
+        <div class="application-card-header-left">
+          <div class="application-card-status">
+            <span>${application.jobStatus}</span>
+          </div>
+          <div class="application-card-applicantName">
+            <b>${application.applicantName}</b>
+          </div>
+          <div class="application-card-role">
+            ${application.jobRole}
+          </div>
+        </div>
+        <div class="application-card-header-right">
+          <div class="actions flex nowrap">
+            <a class="edit nowrap" href="#form-heading" onclick="editApplication('${application.id}')"><i
+                class="fa-solid fa-pen"></i> <span>Edit</span></a>
+
+            <a class="delete nowrap" onclick="deleteApplication('${application.id}')"><i class="fa-solid fa-trash"></i>
+              <span>Delete</span></a>
+          </div>
+        </div>
+      </div>
+      <div class="application-card-body">
+        <div class="application-card-name">
+          <i class="fa-solid fa-building"></i> ${application.companyName}
+        </div>
+        <div class="application-card-location">
+          ${application.jobType == 'remote' ? 'Remote' : application.location}
+        </div>
+        <div class="application-card-date">
+              Applied On ${application.applicationDate}
+            </div>
+      </div>
     `;
 
-    table.appendChild(row);
+    ul.appendChild(li);
     total++;
-    if (application.jobStatus === 'applied') {
+    if (application.jobStatus == 'applied') {
       applied++;
     }
-    if (application.jobStatus === 'interviewing') {
+    if (application.jobStatus == 'interviewing') {
       interviewing++
     };
-    if (application.jobStatus === 'hired') {
+    if (application.jobStatus == 'hired') {
       hired++
     };
-    if (application.jobStatus === 'rejected') {
+    if (application.jobStatus == 'rejected') {
       rejected++
     };
   });
@@ -167,6 +202,7 @@ const editApplication = (id) => {
   const application = applications.find(application => application.id == id);
 
   if (application) {
+    document.getElementById("applicantName").value = application.applicantName;
     document.getElementById('companyName').value = application.companyName;
     document.getElementById('jobRole').value = application.jobRole;
     document.getElementById('jobType').value = application.jobType;
@@ -176,8 +212,8 @@ const editApplication = (id) => {
     if (application.jobType == "remote") {
       document.getElementById('location').style.display = "none";
     } else {
-      document.getElementById('location').style.display = "block";
-      document.getElementById('location').value = application.location;
+      document.getElementById('location').style.display = "flex";
+      document.getElementById('locationInput').value = application.location;
     }
     document.getElementById('applicationId').value = application.id;
   }
@@ -195,6 +231,7 @@ const updateApplication = () => {
 
   const formData = {
     id: applicationId,
+    applicantName: document.getElementById("applicantName").value,
     companyName: document.getElementById('companyName').value,
     jobRole: document.getElementById('jobRole').value,
     jobType: document.getElementById('jobType').value,
@@ -204,7 +241,7 @@ const updateApplication = () => {
   };
 
   if (formData.jobType != "remote") {
-    formData.location = document.getElementById('location').value;
+    formData.location = document.getElementById('locationInput').value;
     console.log("hii")
   }
 
@@ -289,4 +326,154 @@ document.addEventListener('click', (e) => {
     autocompleteList.classList.add('hidden');
   }
 });
+
+
+function toggleView(view) {
+  const container = document.getElementById('applicationTable');
+  container.innerHTML = "";
+  const applications = JSON.parse(localStorage.getItem("applications")) || [];
+
+  if (view == 'row') {
+
+    container.style.display = "flex"
+
+    document.getElementById("row-btn").classList.add("active-btn")
+    document.getElementById("grid-btn").classList.remove("active-btn")
+
+    const table = document.createElement('table');
+    table.classList.add('application-table');
+    table.setAttribute("align", "center")
+
+    const thead = document.createElement('thead');
+    thead.innerHTML = `
+      <tr>
+    <th onclick="sortTable('applicantName')">Applicant <i class="fa-solid fa-sort"></i></th>
+    <th onclick="sortTable('companyName')" class="nowrap" > Company<i class="fa-solid fa-sort"></i> </th>
+    <th onclick="sortTable('jobRole')">Role <i class="fa-solid fa-sort"></i></th>
+    <th onclick="sortTable('jobType')"  class="nowrap">Job Type <i class="fa-solid fa-sort"></i></th>
+    <th onclick="sortTable('jobStatus')">Status <i class="fa-solid fa-sort"></i></th>
+    <th>Actions</th>
+  </tr>
+    `;
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+
+    applications.forEach(app => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${app.applicantName}</td>
+        <td>${app.companyName}</td>
+        <td>${app.jobRole}</td>
+        <td>${app.jobType}</td>
+        <td>${app.jobStatus}</td>
+        <td>
+          <div class="actions flex">
+            <a class="edit" href="#form-heading" onclick="editApplication('${app.id}')"><i
+                class="fa-solid fa-pen"></i> Edit</a>
+
+            <a class="delete" onclick="deleteApplication('${app.id}')"><i class="fa-solid fa-trash"></i>
+              Delete</a>
+          </div>
+        </td>
+      `;
+      tbody.appendChild(row);
+    });
+
+    table.appendChild(tbody);
+    container.appendChild(table);
+  } else {
+    container.style.display = "grid"
+    document.getElementById("grid-btn").classList.add("active-btn")
+    document.getElementById("row-btn").classList.remove("active-btn")
+
+    applications.forEach(application => {
+      const li = document.createElement("li");
+      li.className = "application-card";
+      li.innerHTML = `
+        <div class="application-card-header flex">
+        <div class="application-card-header-left">
+          <div class="application-card-status">
+            <span>${application.jobStatus}</span>
+          </div>
+          <div class="application-card-applicantName">
+            <b>${application.applicantName}</b>
+          </div>
+          <div class="application-card-role">
+            ${application.jobRole}
+          </div>
+        </div>
+        <div class="application-card-header-right">
+          <div class="actions flex nowrap">
+            <a class="edit nowrap" href="#form-heading" onclick="editApplication('${application.id}')"><i
+                class="fa-solid fa-pen"></i> Edit</a>
+
+            <a class="delete nowrap" onclick="deleteApplication('${application.id}')"><i class="fa-solid fa-trash"></i>
+              Delete</a>
+          </div>
+        </div>
+      </div>
+      <div class="application-card-body">
+        <div class="application-card-name">
+          <i class="fa-solid fa-building"></i> ${application.companyName}
+        </div>
+        <div class="application-card-location">
+           ${application.jobType == 'remote' ? 'Remote' : application.location}
+          </div>
+        <div class="application-card-date">
+              Applied On ${application.applicationDate}
+            </div>
+      </div>
+      `;
+      container.appendChild(li);
+    });
+  }
+}
+
+let lastSortedBy = '';
+let sortOrder = 'asc';
+
+function sortTable(field) {
+  let applications = JSON.parse(localStorage.getItem("applications")) || [];
+  if (lastSortedBy == field) {
+    if (sortOrder == 'asc') {
+      sortOrder = 'desc'
+    } else {
+      sortOrder = 'asc'
+    }
+  } else {
+    sortOrder = 'asc'
+  }
+
+  lastSortedBy = field;
+
+  applications.sort(function (a, b) {
+    let valA = a[field];
+    let valB = b[field];
+
+    valA = valA.toString().toLowerCase();
+    valB = valB.toString().toLowerCase();
+
+    if (valA < valB) {
+      if (sortOrder == 'asc') {
+        return -1;
+      } else {
+        return 1;
+      }
+    }
+
+    if (valA > valB) {
+      if (sortOrder == 'asc') {
+        return 1;
+      } else {
+        return -1;
+      }
+    }
+
+    return 0;
+  });
+
+  localStorage.setItem('applications', JSON.stringify(applications));
+  toggleView('row');
+}
 
