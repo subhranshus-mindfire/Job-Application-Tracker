@@ -9,6 +9,15 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
+.left {
+  position: sticky;
+  top: 20px;
+  /* or 0 depending on your header */
+  align-self: start;
+  height: fit-content;
+}
+
+
 input,
 select {
   font-family: "Poppins", sans-serif !important;
