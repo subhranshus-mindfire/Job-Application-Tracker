@@ -12,7 +12,6 @@ body {
 .left {
   position: sticky;
   top: 20px;
-  /* or 0 depending on your header */
   align-self: start;
   height: fit-content;
 }
@@ -433,6 +432,10 @@ th:hover {
 
   .application-card-status span {
     font-size: 14px;
+  }
+
+  .left {
+    position: static;
   }
 }
 
