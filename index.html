@@ -16,7 +16,7 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
-<body onload="fetchApplications()">
+<body onload="JobApplicationModule.fetchApplications()">
 
   <div class="container">
     <h1 class="text-center fs-larger">Job Application Tracker</h1>
@@ -67,7 +67,7 @@
         <div class="form bg-light">
           <h2 class="text-center" id="form-heading"><u>Job Application Form</u></h2>
           <div class="flex justify-center">
-            <form onsubmit="addApplication(event)">
+            <form onsubmit="JobApplicationModule.addApplication(event)">
               <input type="hidden" name="applicationId" id="applicationId">
               <div class="input">
                 <label for="applicantName">Applicant Name<span class="text-danger">*</span></label>
@@ -123,8 +123,9 @@
                   <input type="submit" value="Submit" id="submit-btn">
                 </div>
                 <div class="update hidden" id="update">
-                  <input type="button" value="Update" id="update-btn" onclick="updateApplication()">
-                  <input type="button" value="Cancel" onclick="refresh()">
+                  <input type="button" value="Update" id="update-btn"
+                    onclick="JobApplicationModule.updateApplication()">
+                  <input type="button" value="Cancel" onclick="JobApplicationModule.refresh()">
                 </div>
               </div>
             </form>
@@ -134,8 +135,9 @@
       <div class="right">
         <h2 class="text-center right-heading">Job Applications</h2>
         <div class="toogle-btn">
-          <input type="button" value="Row" onclick="toggleView('row')" id="row-btn">
-          <input type="button" value="Grid" onclick="toggleView('grid')" id="grid-btn" class="active-btn">
+          <input type="button" value="Row" onclick="JobApplicationModule.toggleView('row')" id="row-btn">
+          <input type="button" value="Grid" onclick="JobApplicationModule.toggleView('grid')" id="grid-btn"
+            class="active-btn">
         </div>
 
 
