@@ -116,8 +116,12 @@ const JobApplicationModule = (() => {
     if (isApplicationVerified()) {
       prevApplications.push(formData);
       localStorage.setItem("applications", JSON.stringify(prevApplications));
-      refresh();
-      alert("Application successfully added!");
+      showCustom("Application added!", "success");
+      document.querySelector("form").reset();
+      document.getElementById('location').style.display = 'flex';
+      document.getElementById("autocompleteRoles").classList.add("hidden");
+      document.getElementById("applicationTable").innerHTML = "";
+      fetchApplications()
     }
   };
 
@@ -174,11 +178,13 @@ const JobApplicationModule = (() => {
         <div class="application-card-name">
           <i class="fa-solid fa-building"></i> ${application.companyName}
         </div>
+        <div class="flex application-card-footer">
         <div class="application-card-location">
-          ${application.jobType == 'remote' ? 'Remote' : application.location}
-        </div>
+           ${application.jobType == 'remote' ? 'Remote' : application.location}
+          </div>
         <div class="application-card-date">
               Applied On ${application.applicationDate}
+            </div>
             </div>
       </div>
     `;
@@ -263,8 +269,12 @@ const JobApplicationModule = (() => {
     if (isApplicationVerified()) {
       applications[applicationIndex] = formData;
       localStorage.setItem("applications", JSON.stringify(applications))
-      alert("Application Updated")
-      window.location.reload()
+      showLlert("Application Updated", "success")
+      document.querySelector("form").reset();
+      document.getElementById('location').style.display = 'flex';
+      document.getElementById("autocompleteRoles").classList.add("hidden");
+      document.getElementById("applicationTable").innerHTML = "";
+      fetchApplications()
     }
   }
 
@@ -281,13 +291,8 @@ const JobApplicationModule = (() => {
         applications.splice(applicationIndex, 1);
         localStorage.setItem("applications", JSON.stringify(applications));
       }
-      refresh()
-      setTimeout(() => {
-        alert("Application deleted successfully!");
-      }, 3000)
 
-    } else {
-      alert("Application deletion cancelled.");
+      showAlert("Application deleted!", "success");
     }
   };
 
@@ -438,11 +443,13 @@ const JobApplicationModule = (() => {
         <div class="application-card-name">
           <i class="fa-solid fa-building"></i> ${application.companyName}
         </div>
+        <div class="flex application-card-footer">
         <div class="application-card-location">
            ${application.jobType == 'remote' ? 'Remote' : application.location}
           </div>
         <div class="application-card-date">
               Applied On ${application.applicationDate}
+            </div>
             </div>
       </div>
       `;
@@ -499,6 +506,17 @@ const JobApplicationModule = (() => {
     localStorage.setItem('applications', JSON.stringify(applications));
     toggleView('row');
   }
+
+  function showAlert(message, type = 'success') {
+    const alertBox = document.getElementById('customAlert');
+    alertBox.textContent = message;
+    alertBox.className = `custom-alert show ${type}`;
+
+    setTimeout(() => {
+      alertBox.classList.remove('show');
+    }, 3000);
+  }
+
 
   return {
     addApplication,

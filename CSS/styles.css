@@ -314,6 +314,39 @@ th:hover {
   white-space: nowrap;
 }
 
+.application-card-footer {
+  justify-content: space-between;
+}
+
+.custom-alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #323232;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  transform: translateY(-20px);
+}
+
+.custom-alert.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.custom-alert.success {
+  background-color: #28a745;
+}
+
+.custom-alert.error {
+  background-color: #dc3545;
+}
+
+
 @media screen and (max-width: 900px) {
 
   body,
@@ -437,6 +470,22 @@ th:hover {
   .left {
     position: static;
   }
+
+  .custom-alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #323232;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 4px;
+    font-size: 12px;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    transform: translateY(-20px);
+  }
+
 }
 
 .text-danger {
