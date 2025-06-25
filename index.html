@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet" href="./CSS/styles.css">
+  <title>Job Application Tracker</title>
+  <link rel="stylesheet" href="./css/styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -16,50 +16,29 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
-<body onload="JobApplicationModule.fetchApplications()">
-
+<body>
   <div class="container">
     <h1 class="text-center fs-larger">Job Application Tracker</h1>
     <div class="flex statuses justify-content-evenly">
       <div class="card">
-        <div class="text-center">
-          <span id="totalApplications"></span>
-        </div>
-        <div class="text-center">
-          Applications <i class="fa-solid fa-envelope"></i>
-        </div>
+        <div class="text-center"><span id="totalApplications"></span></div>
+        <div class="text-center">Applications <i class="fa-solid fa-envelope"></i></div>
       </div>
       <div class="card">
-        <div class="text-center">
-          <span id="hiredCount"></span>
-        </div>
-        <div class="text-center">
-          Hired <i class="fa-solid fa-circle-check" style="color: #37ff00;"></i>
-        </div>
+        <div class="text-center"><span id="hiredCount"></span></div>
+        <div class="text-center">Hired <i class="fa-solid fa-circle-check" style="color: #37ff00;"></i></div>
       </div>
       <div class="card">
-        <div class="text-center">
-          <span id="appliedCount"></span>
-        </div>
-        <div class="text-center">
-          Applied <i class="fa-solid fa-arrow-right-to-bracket"></i>
-        </div>
+        <div class="text-center"><span id="appliedCount"></span></div>
+        <div class="text-center">Applied <i class="fa-solid fa-arrow-right-to-bracket"></i></div>
       </div>
       <div class="card">
-        <div class="text-center">
-          <span id="interviewingCount"></span>
-        </div>
-        <div class="text-center">
-          Interviewing <i class="fa-solid fa-chalkboard-user"></i>
-        </div>
+        <div class="text-center"><span id="interviewingCount"></span></div>
+        <div class="text-center">Interviewing <i class="fa-solid fa-chalkboard-user"></i></div>
       </div>
       <div class="card">
-        <div class="text-center">
-          <span id="rejectedCount"></span>
-        </div>
-        <div class="text-center">
-          Rejected <i class="fa-solid fa-circle-xmark" style="color: #ff0000;"></i>
-        </div>
+        <div class="text-center"><span id="rejectedCount"></span></div>
+        <div class="text-center">Rejected <i class="fa-solid fa-circle-xmark" style="color: #ff0000;"></i></div>
       </div>
     </div>
     <div class="grid halfs gap-2">
@@ -67,7 +46,7 @@
         <div class="form bg-light">
           <h2 class="text-center" id="form-heading"><u>Job Application Form</u></h2>
           <div class="flex justify-center">
-            <form onsubmit="JobApplicationModule.addApplication(event)">
+            <form id="applicationForm">
               <input type="hidden" name="applicationId" id="applicationId">
               <div class="input">
                 <label for="applicantName">Applicant Name<span class="text-danger">*</span></label>
@@ -87,7 +66,7 @@
               </div>
               <div class="input">
                 <label for="labelJobType">Job Type<span class="text-danger">*</span></label>
-                <select name="jobType" id="jobType" onchange="JobApplicationModule.isRemoteSelected()">
+                <select name="jobType" id="jobType">
                   <option value="onsite">On-Site</option>
                   <option value="remote">Remote</option>
                   <option value="hybrid">Hybrid</option>
@@ -107,10 +86,10 @@
               <div class="input">
                 <label for="jobStatus">Application Status<span class="text-danger">*</span></label>
                 <select name="jobStatus" id="jobStatus">
-                  <option value="applied"> Applied</option>
-                  <option value="interviewing"> Interviewing </option>
-                  <option value="rejected"> Rejected </option>
-                  <option value="hired"> Hired </option>
+                  <option value="applied">Applied</option>
+                  <option value="interviewing">Interviewing</option>
+                  <option value="rejected">Rejected</option>
+                  <option value="hired">Hired</option>
                 </select>
                 <span class="statusError text-danger hidden">-Application status required</span>
               </div>
@@ -123,9 +102,8 @@
                   <input type="submit" value="Submit" id="submit-btn">
                 </div>
                 <div class="update hidden" id="update">
-                  <input type="button" value="Update" id="update-btn"
-                    onclick="JobApplicationModule.updateApplication()">
-                  <input type="button" value="Cancel" onclick="JobApplicationModule.refresh()">
+                  <input type="button" value="Update" id="update-btn">
+                  <input type="button" value="Cancel" id="cancel-btn">
                 </div>
               </div>
             </form>
@@ -135,52 +113,22 @@
       <div class="right">
         <h2 class="text-center right-heading">Job Applications</h2>
         <div class="toogle-btn">
-          <input type="button" value="Row" onclick="JobApplicationModule.toggleView('row')" id="row-btn">
-          <input type="button" value="Grid" onclick="JobApplicationModule.toggleView('grid')" id="grid-btn"
-            class="active-btn">
+          <input type="button" value="Row" id="row-btn">
+          <input type="button" value="Grid" id="grid-btn" class="active-btn">
         </div>
-
-
-        <ul id="applicationTable" class="grid">
-          <!-- <li class="application-card">
-            <div class="application-card-header flex">
-              <div class="application-card-header-left">
-                <div class="application-card-status">
-                  <span>${application.jobStatus}</span>
-                </div>
-                <div class="application-card-role">
-                  <b>${application.jobRole}</b>
-                </div>
-              </div>
-              <div class="application-card-header-right">
-                <div class="actions flex">
-                  <div class="application-card-date">
-                    Applied On ${application.applicationDate}
-                  </div>
-                  <a class="edit" href="#form-heading" onclick="editApplication('${application.id}')"><i
-                      class="fa-solid fa-pen"></i> Edit</a>
-
-                  <a class="delete" onclick="deleteApplication('${application.id}')"><i class="fa-solid fa-trash"></i>
-                    Delete</a>
-                </div>
-              </div>
-            </div>
-            <div class="application-card-body">
-              <div class="application-card-name">
-                ${application.companyName}
-              </div>
-              <div class="application-card-location">
-                <i class="fa-solid fa-house"></i> Bhubaneswar
-              </div>
-            </div>
-          </li> -->
-        </ul>
+        <ul id="applicationTable" class="grid"></ul>
       </div>
     </div>
   </div>
   <div id="customAlert" class="custom-alert">Added Successfully</div>
-
-  <script src="./JS/index.js"></script>
+  <script src="./js/constants.js"></script>
+  <script src="./js/state.js"></script>
+  <script src="./js/storage.service.js"></script>
+  <script src="./js/logic.service.js"></script>
+  <script src="./js/dom.service.js"></script>
+  <script src="./js/form.manager.js"></script>
+  <script src="./js/events.js"></script>
+  <script src="./js/app.js"></script>
 </body>
 
 </html>

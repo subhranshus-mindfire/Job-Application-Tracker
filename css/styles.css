@@ -356,6 +356,10 @@ th:hover {
   color: green;
 }
 
+.add-focus {
+  border: 2px solid black;
+}
+
 
 @media screen and (max-width: 1000px) {
 
