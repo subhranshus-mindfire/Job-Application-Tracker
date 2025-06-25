@@ -354,7 +354,7 @@ th:hover {
 }
 
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1000px) {
 
   body,
   .left,
@@ -492,6 +492,16 @@ th:hover {
     transform: translateY(-20px);
   }
 
+}
+
+@media screen and (max-width: 1300px) {
+  .halfs {
+    display: block;
+  }
+
+  .left {
+    position: static;
+  }
 }
 
 .text-danger {

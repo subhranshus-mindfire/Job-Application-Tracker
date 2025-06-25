@@ -442,12 +442,12 @@ const JobApplicationModule = (() => {
         </div>
       </div>
       <div class="application-card-body">
-        <div class="application-card-name" title="Company">
-          <i class="fa-solid fa-building"></i> ${application.companyName}
+        <div class="application-card-name">
+          <span  title="Company"><i class="fa-solid fa-building"></i> ${application.companyName}</span>
         </div>
         <div class="flex application-card-footer">
-        <div class="application-card-location">
-           ${application.jobType == 'remote' ? 'Remote' : application.location}
+        <div class="application-card-location" title="Job Location">
+           <span>${application.jobType == 'remote' ? 'Remote' : application.location}</span>
           </div>
         <div class="application-card-date">
               Applied On ${application.applicationDate}
