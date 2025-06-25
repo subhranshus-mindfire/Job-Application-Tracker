@@ -128,66 +128,6 @@ const JobApplicationModule = (() => {
 
   // Fetchs all applications and displays it
   const fetchApplications = () => {
-    let applications = JSON.parse(localStorage.getItem("applications")) || [];
-    console.log(applications);
-    const ul = document.getElementById('applicationTable');
-    // applications.forEach(application => {
-    //   const li = document.createElement('li');
-    //   li.classList.add("application-card")
-
-    //   li.innerHTML = `
-    //   <div class="application-card-header flex">
-    //     <div class="application-card-header-left">
-    //       <div class="application-card-status">
-    //         <span>${application.jobStatus}</span>
-    //       </div>
-    //       <div class="application-card-applicantName">
-    //         <b>${application.applicantName}</b>
-    //       </div>
-    //       <div class="application-card-role">
-    //         ${application.jobRole}
-    //       </div>
-    //     </div>
-    //     <div class="application-card-header-right">
-    //       <div class="actions flex nowrap">
-    //         <a class="edit nowrap" href="#form-heading" onclick="JobApplicationModule.editApplication('${application.id}')"><i
-    //             class="fa-solid fa-pen"></i> <span>Edit</span></a>
-
-    //         <a class="delete nowrap" onclick="JobApplicationModule.deleteApplication('${application.id}')"><i class="fa-solid fa-trash"></i>
-    //           <span>Delete</span></a>
-    //       </div>
-    //     </div>
-    //   </div>
-    //   <div class="application-card-body">
-    //     <div class="application-card-name">
-    //       <i class="fa-solid fa-building"></i> ${application.companyName}
-    //     </div>
-    //     <div class="flex application-card-footer">
-    //     <div class="application-card-location">
-    //        ${application.jobType == 'remote' ? 'Remote' : application.location}
-    //       </div>
-    //     <div class="application-card-date">
-    //           Applied On ${application.applicationDate}
-    //         </div>
-    //         </div>
-    //   </div>
-    // `;
-
-    //   ul.appendChild(li);
-    //   total++;
-    //   if (application.jobStatus == 'applied') {
-    //     applied++;
-    //   }
-    //   if (application.jobStatus == 'interviewing') {
-    //     interviewing++
-    //   };
-    //   if (application.jobStatus == 'hired') {
-    //     hired++
-    //   };
-    //   if (application.jobStatus == 'rejected') {
-    //     rejected++
-    //   };
-    // });
     toggleView(prevView)
   };
 
@@ -422,7 +362,7 @@ const JobApplicationModule = (() => {
         <div class="application-card-header flex">
         <div class="application-card-header-left">
           <div class="application-card-status">
-            <span>${application.jobStatus}</span>
+            <span class="${application.jobStatus == 'hired' ? 'text-success' : application.jobStatus == 'rejected' ? 'text-danger' : ""}">${application.jobStatus}</span>
           </div>
           <div class="application-card-applicantName">
             <b>${application.applicantName}</b>
