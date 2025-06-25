@@ -116,7 +116,7 @@ const JobApplicationModule = (() => {
     if (isApplicationVerified()) {
       prevApplications.push(formData);
       localStorage.setItem("applications", JSON.stringify(prevApplications));
-      showCustom("Application added!", "success");
+      showAlert("Application added!", "success");
       document.querySelector("form").reset();
       document.getElementById('location').style.display = 'flex';
       document.getElementById("autocompleteRoles").classList.add("hidden");
