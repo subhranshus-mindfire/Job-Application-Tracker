@@ -1,8 +1,10 @@
 
 const JobApplicationModule = (() => {
-
+  // Set max value for application date input to today
   document.getElementById('applicationDate').max = new Date().toISOString().split('T')[0];
 
+
+  //hides or shows the location field depending on job type.
   const isRemoteSelected = () => {
     if (document.getElementById("jobType").value == "remote") {
       document.getElementById("location").style.display = "none";
@@ -23,6 +25,7 @@ const JobApplicationModule = (() => {
     isLocationRequired: true
   }
 
+  // verifies wheather the required fields are provided or not 
   const isApplicationVerified = () => {
     const applicantName = document.getElementById("applicantName").value;
     const companyName = document.getElementById('companyName').value;
@@ -88,6 +91,8 @@ const JobApplicationModule = (() => {
     return res;
   };
 
+
+  // Adds the job application into local storage
   const addApplication = (e) => {
     e.preventDefault();
 
@@ -111,11 +116,16 @@ const JobApplicationModule = (() => {
     if (isApplicationVerified()) {
       prevApplications.push(formData);
       localStorage.setItem("applications", JSON.stringify(prevApplications));
-      refresh();
-      alert("Application successfully added!");
+      showCustom("Application added!", "success");
+      document.querySelector("form").reset();
+      document.getElementById('location').style.display = 'flex';
+      document.getElementById("autocompleteRoles").classList.add("hidden");
+      document.getElementById("applicationTable").innerHTML = "";
+      fetchApplications()
     }
   };
 
+  // Fetchs all applications and displays it
   const fetchApplications = () => {
     let applications = JSON.parse(localStorage.getItem("applications")) || [];
     console.log(applications);
@@ -156,10 +166,10 @@ const JobApplicationModule = (() => {
         </div>
         <div class="application-card-header-right">
           <div class="actions flex nowrap">
-            <a class="edit nowrap" href="#form-heading" onclick="editApplication('${application.id}')"><i
+            <a class="edit nowrap" href="#form-heading" onclick="JobApplicationModule.editApplication('${application.id}')"><i
                 class="fa-solid fa-pen"></i> <span>Edit</span></a>
 
-            <a class="delete nowrap" onclick="deleteApplication('${application.id}')"><i class="fa-solid fa-trash"></i>
+            <a class="delete nowrap" onclick="JobApplicationModule.deleteApplication('${application.id}')"><i class="fa-solid fa-trash"></i>
               <span>Delete</span></a>
           </div>
         </div>
@@ -168,11 +178,13 @@ const JobApplicationModule = (() => {
         <div class="application-card-name">
           <i class="fa-solid fa-building"></i> ${application.companyName}
         </div>
+        <div class="flex application-card-footer">
         <div class="application-card-location">
-          ${application.jobType == 'remote' ? 'Remote' : application.location}
-        </div>
+           ${application.jobType == 'remote' ? 'Remote' : application.location}
+          </div>
         <div class="application-card-date">
               Applied On ${application.applicationDate}
+            </div>
             </div>
       </div>
     `;
@@ -225,10 +237,13 @@ const JobApplicationModule = (() => {
     }
   };
 
+
+  //refreshes the page
   const refresh = () => {
     window.location.reload()
   }
 
+  // updated the application and stores it in local storage
   const updateApplication = () => {
     let applications = JSON.parse(localStorage.getItem("applications")) || [];
 
@@ -254,11 +269,16 @@ const JobApplicationModule = (() => {
     if (isApplicationVerified()) {
       applications[applicationIndex] = formData;
       localStorage.setItem("applications", JSON.stringify(applications))
-      alert("Application Updated")
-      window.location.reload()
+      showLlert("Application Updated", "success")
+      document.querySelector("form").reset();
+      document.getElementById('location').style.display = 'flex';
+      document.getElementById("autocompleteRoles").classList.add("hidden");
+      document.getElementById("applicationTable").innerHTML = "";
+      fetchApplications()
     }
   }
 
+  //deletes a job applications
   const deleteApplication = (applicationId) => {
     const isConfirmed = window.confirm("Are you sure you want to delete this application?");
 
@@ -271,13 +291,8 @@ const JobApplicationModule = (() => {
         applications.splice(applicationIndex, 1);
         localStorage.setItem("applications", JSON.stringify(applications));
       }
-      refresh()
-      setTimeout(() => {
-        alert("Application deleted successfully!");
-      }, 3000)
 
-    } else {
-      alert("Application deletion cancelled.");
+      showAlert("Application deleted!", "success");
     }
   };
 
@@ -336,6 +351,9 @@ const JobApplicationModule = (() => {
   });
 
 
+
+  //toogles between table view and grid view
+
   function toggleView(view) {
     const container = document.getElementById('applicationTable');
     container.innerHTML = "";
@@ -355,11 +373,11 @@ const JobApplicationModule = (() => {
       const thead = document.createElement('thead');
       thead.innerHTML = `
       <tr>
-    <th onclick="sortTable('applicantName')">Applicant <i class="fa-solid fa-sort"></i></th>
-    <th onclick="sortTable('companyName')" class="nowrap" > Company<i class="fa-solid fa-sort"></i> </th>
-    <th onclick="sortTable('jobRole')">Role <i class="fa-solid fa-sort"></i></th>
-    <th onclick="sortTable('jobType')"  class="nowrap">Job Type <i class="fa-solid fa-sort"></i></th>
-    <th onclick="sortTable('jobStatus')">Status <i class="fa-solid fa-sort"></i></th>
+    <th onclick="JobApplicationModule.sortTable('applicantName')">Applicant <i class="fa-solid fa-sort"></i></th>
+    <th onclick="JobApplicationModule.sortTable('companyName')" class="nowrap" > Company<i class="fa-solid fa-sort"></i> </th>
+    <th onclick="JobApplicationModule.sortTable('jobRole')">Role <i class="fa-solid fa-sort"></i></th>
+    <th onclick="JobApplicationModule.sortTable('jobType')"  class="nowrap">Job Type <i class="fa-solid fa-sort"></i></th>
+    <th onclick="JobApplicationModule.sortTable('jobStatus')">Status <i class="fa-solid fa-sort"></i></th>
     <th>Actions</th>
   </tr>
     `;
@@ -377,10 +395,10 @@ const JobApplicationModule = (() => {
         <td>${app.jobStatus}</td>
         <td>
           <div class="actions flex">
-            <a class="edit" href="#form-heading" onclick="editApplication('${app.id}')"><i
+            <a class="edit" href="#form-heading" onclick="JobApplicationModule.editApplication('${app.id}')"><i
                 class="fa-solid fa-pen"></i> Edit</a>
 
-            <a class="delete" onclick="deleteApplication('${app.id}')"><i class="fa-solid fa-trash"></i>
+            <a class="delete" onclick="JobApplicationModule.deleteApplication('${app.id}')"><i class="fa-solid fa-trash"></i>
               Delete</a>
           </div>
         </td>
@@ -413,10 +431,10 @@ const JobApplicationModule = (() => {
         </div>
         <div class="application-card-header-right">
           <div class="actions flex nowrap">
-            <a class="edit nowrap" href="#form-heading" onclick="editApplication('${application.id}')"><i
+            <a class="edit nowrap" href="#form-heading" onclick="JobApplicationModule.editApplication('${application.id}')"><i
                 class="fa-solid fa-pen"></i> Edit</a>
 
-            <a class="delete nowrap" onclick="deleteApplication('${application.id}')"><i class="fa-solid fa-trash"></i>
+            <a class="delete nowrap" onclick="JobApplicationModule.deleteApplication('${application.id}')"><i class="fa-solid fa-trash"></i>
               Delete</a>
           </div>
         </div>
@@ -425,11 +443,13 @@ const JobApplicationModule = (() => {
         <div class="application-card-name">
           <i class="fa-solid fa-building"></i> ${application.companyName}
         </div>
+        <div class="flex application-card-footer">
         <div class="application-card-location">
            ${application.jobType == 'remote' ? 'Remote' : application.location}
           </div>
         <div class="application-card-date">
               Applied On ${application.applicationDate}
+            </div>
             </div>
       </div>
       `;
@@ -441,6 +461,8 @@ const JobApplicationModule = (() => {
   let lastSortedBy = '';
   let sortOrder = 'asc';
 
+
+  // Sorts the table 
   function sortTable(field) {
     let applications = JSON.parse(localStorage.getItem("applications")) || [];
     if (lastSortedBy == field) {
@@ -485,6 +507,15 @@ const JobApplicationModule = (() => {
     toggleView('row');
   }
 
+  function showAlert(message, type = 'success') {
+    const alertBox = document.getElementById('customAlert');
+    alertBox.textContent = message;
+    alertBox.className = `custom-alert show ${type}`;
+
+    setTimeout(() => {
+      alertBox.classList.remove('show');
+    }, 3000);
+  }
 
 
   return {
