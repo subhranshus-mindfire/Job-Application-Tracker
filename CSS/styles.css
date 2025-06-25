@@ -37,6 +37,11 @@ li {
   display: flex;
 }
 
+.statuses {
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
 .justify-center {
   justify-content: center;
 }
@@ -280,8 +285,11 @@ th:hover {
   font-size: larger;
 }
 
-#applicationTable {
+.grid {
   display: grid;
+}
+
+#applicationTable {
   grid-template-columns: 50% 50%;
   gap: 10px;
 }
@@ -329,7 +337,6 @@ th:hover {
   font-size: 16px;
   z-index: 9999;
   opacity: 0;
-  transition: opacity 0.4s ease, transform 0.4s ease;
   transform: translateY(-20px);
 }
 
@@ -400,8 +407,7 @@ th:hover {
   }
 
   .statuses {
-    flex-direction: column;
-    align-items: center;
+    flex-wrap: wrap;
     gap: 20px;
   }
 

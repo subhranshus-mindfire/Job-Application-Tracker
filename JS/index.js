@@ -3,6 +3,7 @@ const JobApplicationModule = (() => {
   // Set max value for application date input to today
   document.getElementById('applicationDate').max = new Date().toISOString().split('T')[0];
 
+  let prevView = "grid"
 
   //hides or shows the location field depending on job type.
   const isRemoteSelected = () => {
@@ -130,86 +131,64 @@ const JobApplicationModule = (() => {
     let applications = JSON.parse(localStorage.getItem("applications")) || [];
     console.log(applications);
     const ul = document.getElementById('applicationTable');
+    // applications.forEach(application => {
+    //   const li = document.createElement('li');
+    //   li.classList.add("application-card")
 
-    let total = 0, applied = 0, interviewing = 0, hired = 0, rejected = 0;
-    applications.forEach(application => {
-      const li = document.createElement('li');
-      li.classList.add("application-card")
-      let statusColor;
-      if (application.jobStatus == "hired") {
-        statusColor = "green"
-      }
-      else if (application.jobStatus == "rejected") {
-        statusColor = "red"
-      }
-      else if (application.jobStatus == "interviewing") {
-        statusColor = "blue"
-      }
-      else {
-        statusColor = "black"
-      }
+    //   li.innerHTML = `
+    //   <div class="application-card-header flex">
+    //     <div class="application-card-header-left">
+    //       <div class="application-card-status">
+    //         <span>${application.jobStatus}</span>
+    //       </div>
+    //       <div class="application-card-applicantName">
+    //         <b>${application.applicantName}</b>
+    //       </div>
+    //       <div class="application-card-role">
+    //         ${application.jobRole}
+    //       </div>
+    //     </div>
+    //     <div class="application-card-header-right">
+    //       <div class="actions flex nowrap">
+    //         <a class="edit nowrap" href="#form-heading" onclick="JobApplicationModule.editApplication('${application.id}')"><i
+    //             class="fa-solid fa-pen"></i> <span>Edit</span></a>
 
-      console.log(statusColor)
+    //         <a class="delete nowrap" onclick="JobApplicationModule.deleteApplication('${application.id}')"><i class="fa-solid fa-trash"></i>
+    //           <span>Delete</span></a>
+    //       </div>
+    //     </div>
+    //   </div>
+    //   <div class="application-card-body">
+    //     <div class="application-card-name">
+    //       <i class="fa-solid fa-building"></i> ${application.companyName}
+    //     </div>
+    //     <div class="flex application-card-footer">
+    //     <div class="application-card-location">
+    //        ${application.jobType == 'remote' ? 'Remote' : application.location}
+    //       </div>
+    //     <div class="application-card-date">
+    //           Applied On ${application.applicationDate}
+    //         </div>
+    //         </div>
+    //   </div>
+    // `;
 
-      li.innerHTML = `
-      <div class="application-card-header flex">
-        <div class="application-card-header-left">
-          <div class="application-card-status">
-            <span>${application.jobStatus}</span>
-          </div>
-          <div class="application-card-applicantName">
-            <b>${application.applicantName}</b>
-          </div>
-          <div class="application-card-role">
-            ${application.jobRole}
-          </div>
-        </div>
-        <div class="application-card-header-right">
-          <div class="actions flex nowrap">
-            <a class="edit nowrap" href="#form-heading" onclick="JobApplicationModule.editApplication('${application.id}')"><i
-                class="fa-solid fa-pen"></i> <span>Edit</span></a>
-
-            <a class="delete nowrap" onclick="JobApplicationModule.deleteApplication('${application.id}')"><i class="fa-solid fa-trash"></i>
-              <span>Delete</span></a>
-          </div>
-        </div>
-      </div>
-      <div class="application-card-body">
-        <div class="application-card-name">
-          <i class="fa-solid fa-building"></i> ${application.companyName}
-        </div>
-        <div class="flex application-card-footer">
-        <div class="application-card-location">
-           ${application.jobType == 'remote' ? 'Remote' : application.location}
-          </div>
-        <div class="application-card-date">
-              Applied On ${application.applicationDate}
-            </div>
-            </div>
-      </div>
-    `;
-
-      ul.appendChild(li);
-      total++;
-      if (application.jobStatus == 'applied') {
-        applied++;
-      }
-      if (application.jobStatus == 'interviewing') {
-        interviewing++
-      };
-      if (application.jobStatus == 'hired') {
-        hired++
-      };
-      if (application.jobStatus == 'rejected') {
-        rejected++
-      };
-    });
-
-    document.getElementById('totalApplications').textContent = total;
-    document.getElementById('appliedCount').textContent = applied;
-    document.getElementById('interviewingCount').textContent = interviewing;
-    document.getElementById('hiredCount').textContent = hired;
-    document.getElementById('rejectedCount').textContent = rejected;
+    //   ul.appendChild(li);
+    //   total++;
+    //   if (application.jobStatus == 'applied') {
+    //     applied++;
+    //   }
+    //   if (application.jobStatus == 'interviewing') {
+    //     interviewing++
+    //   };
+    //   if (application.jobStatus == 'hired') {
+    //     hired++
+    //   };
+    //   if (application.jobStatus == 'rejected') {
+    //     rejected++
+    //   };
+    // });
+    toggleView(prevView)
   };
 
   const editApplication = (id) => {
@@ -360,9 +339,14 @@ const JobApplicationModule = (() => {
     container.innerHTML = "";
     const applications = JSON.parse(localStorage.getItem("applications")) || [];
 
-    if (view == 'row') {
+    let total = 0, applied = 0, interviewing = 0, hired = 0, rejected = 0;
 
-      container.style.display = "flex"
+
+    if (view == 'row') {
+      prevView = "row"
+
+      container.classList.remove("grid")
+      container.classList.add("flex")
 
       document.getElementById("row-btn").classList.add("active-btn")
       document.getElementById("grid-btn").classList.remove("active-btn")
@@ -386,6 +370,7 @@ const JobApplicationModule = (() => {
 
       const tbody = document.createElement('tbody');
 
+
       applications.forEach(app => {
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -404,13 +389,29 @@ const JobApplicationModule = (() => {
           </div>
         </td>
       `;
+        if (app.jobStatus == 'applied') {
+          applied++;
+        }
+        if (app.jobStatus == 'interviewing') {
+          interviewing++
+        };
+        if (app.jobStatus == 'hired') {
+          hired++
+        };
+        if (app.jobStatus == 'rejected') {
+          rejected++
+        };
+        total++;
         tbody.appendChild(row);
       });
 
       table.appendChild(tbody);
       container.appendChild(table);
     } else {
-      container.style.display = "grid"
+
+      prevView = "grid"
+      container.classList.remove("flex")
+      container.classList.add("grid")
       document.getElementById("grid-btn").classList.add("active-btn")
       document.getElementById("row-btn").classList.remove("active-btn")
 
@@ -441,7 +442,7 @@ const JobApplicationModule = (() => {
         </div>
       </div>
       <div class="application-card-body">
-        <div class="application-card-name">
+        <div class="application-card-name" title="Company">
           <i class="fa-solid fa-building"></i> ${application.companyName}
         </div>
         <div class="flex application-card-footer">
@@ -454,9 +455,27 @@ const JobApplicationModule = (() => {
             </div>
       </div>
       `;
+        total++;
+        if (application.jobStatus == 'applied') {
+          applied++;
+        }
+        if (application.jobStatus == 'interviewing') {
+          interviewing++
+        };
+        if (application.jobStatus == 'hired') {
+          hired++
+        };
+        if (application.jobStatus == 'rejected') {
+          rejected++
+        };
         container.appendChild(li);
       });
     }
+    document.getElementById('totalApplications').textContent = total;
+    document.getElementById('appliedCount').textContent = applied;
+    document.getElementById('interviewingCount').textContent = interviewing;
+    document.getElementById('hiredCount').textContent = hired;
+    document.getElementById('rejectedCount').textContent = rejected;
   }
 
   let lastSortedBy = '';
