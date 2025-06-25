@@ -269,7 +269,7 @@ const JobApplicationModule = (() => {
     if (isApplicationVerified()) {
       applications[applicationIndex] = formData;
       localStorage.setItem("applications", JSON.stringify(applications))
-      showLlert("Application Updated", "success")
+      showAlert("Application Updated", "success")
       document.querySelector("form").reset();
       document.getElementById('location').style.display = 'flex';
       document.getElementById("autocompleteRoles").classList.add("hidden");
@@ -293,6 +293,7 @@ const JobApplicationModule = (() => {
       }
 
       showAlert("Application deleted!", "success");
+      fetchApplications()
     }
   };
 
